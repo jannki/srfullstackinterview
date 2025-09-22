@@ -12,12 +12,15 @@ A simple NestJS backend application with JSON RPC-like REST API.
 
 ## Prerequisites
 
-- Node.js (v16 or higher)
-- npm
+- Node.js (v20 or higher)
+- npm (comes with Node.js)
 
 ## Installation
 
+Install project dependencies using **npm** (Node.js ships with npm by default). If you use a Node version manager such as `nvm`, make sure you have switched to Node 20 first:
+
 ```bash
+nvm use 20
 npm install
 ```
 
