@@ -85,4 +85,39 @@ describe('Chat and Message Services', () => {
     const responses = await surveyService.listResponses(survey.id, trainer.user.id);
     expect(responses.length).toEqual(1);
   });
+
+  it('allows both participants to like messages and includes likes when listing', async () => {
+    const { trainer, trainee, chatId } = await setupChat();
+
+    const text = await messageService.sendMessage(chatId, trainer.user.id, {
+      type: 'text',
+      textContent: 'Like this message',
+    });
+
+    const firstLike = await messageService.likeMessage(chatId, text.id, trainee.user.id);
+    expect(firstLike.likes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ userId: trainee.user.id }),
+      ]),
+    );
+
+    const secondLike = await messageService.likeMessage(chatId, text.id, trainer.user.id);
+    expect(secondLike.likes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ userId: trainer.user.id }),
+        expect.objectContaining({ userId: trainee.user.id }),
+      ]),
+    );
+
+    // liking again should not duplicate entries
+    await messageService.likeMessage(chatId, text.id, trainee.user.id);
+
+    const messages = await messageService.listMessages(chatId, trainee.user.id, 5);
+    const likedMessage = messages.find((message) => message.id === text.id);
+    expect(likedMessage).toBeDefined();
+    expect(likedMessage?.likes).toHaveLength(2);
+    expect(likedMessage?.likes.map((like) => like.userId)).toEqual(
+      expect.arrayContaining([trainer.user.id, trainee.user.id]),
+    );
+  });
 });

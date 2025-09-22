@@ -115,4 +115,13 @@ export class ChatsController {
   ) {
     return this.surveyService.listResponses(messageId, user.id);
   }
+
+  @Post(':chatId/messages/:messageId/likes')
+  likeMessage(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('chatId', ParseIntPipe) chatId: number,
+    @Param('messageId', ParseIntPipe) messageId: number,
+  ) {
+    return this.messageService.likeMessage(chatId, messageId, user.id);
+  }
 }

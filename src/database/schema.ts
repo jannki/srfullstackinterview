@@ -3,6 +3,7 @@ import {
   integer,
   sqliteTable,
   text,
+  uniqueIndex,
 } from 'drizzle-orm/sqlite-core';
 
 export const users = sqliteTable('users', {
@@ -148,6 +149,28 @@ export const messages = sqliteTable('messages', {
     .notNull()
     .default(sql`(strftime('%s', 'now'))`),
 });
+
+export const messageLikes = sqliteTable(
+  'message_likes',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    messageId: integer('message_id')
+      .notNull()
+      .references(() => messages.id, { onDelete: 'cascade' }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: integer('created_at')
+      .notNull()
+      .default(sql`(strftime('%s', 'now'))`),
+  },
+  (table) => ({
+    messageUserUnique: uniqueIndex('message_likes_message_user_unique').on(
+      table.messageId,
+      table.userId,
+    ),
+  }),
+);
 
 export const surveyResponses = sqliteTable('survey_responses', {
   id: integer('id').primaryKey({ autoIncrement: true }),
