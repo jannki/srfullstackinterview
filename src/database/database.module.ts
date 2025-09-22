@@ -17,3 +17,5 @@ export const DATABASE_CONNECTION = Symbol('DATABASE_CONNECTION');
   exports: [DATABASE_CONNECTION],
 })
 export class DatabaseModule {}
+
+export type { DatabaseType };
