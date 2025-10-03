@@ -95,6 +95,15 @@ const createTableStatements = [
     FOREIGN KEY(chat_id) REFERENCES chats(id) ON DELETE CASCADE,
     FOREIGN KEY(sender_user_id) REFERENCES users(id) ON DELETE CASCADE
   );`,
+  `CREATE TABLE IF NOT EXISTS message_likes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY(message_id) REFERENCES messages(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(message_id, user_id)
+  );`,
   `CREATE TABLE IF NOT EXISTS survey_responses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     message_id INTEGER NOT NULL,
@@ -114,6 +123,8 @@ const createTableStatements = [
   );`,
   `CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id);`,
   `CREATE INDEX IF NOT EXISTS idx_messages_sender_user_id ON messages(sender_user_id);`,
+  `CREATE INDEX IF NOT EXISTS idx_message_likes_message_id ON message_likes(message_id);`,
+  `CREATE INDEX IF NOT EXISTS idx_message_likes_user_id ON message_likes(user_id);`,
   `CREATE INDEX IF NOT EXISTS idx_invitations_trainer_id ON invitations(trainer_id);`,
   `CREATE INDEX IF NOT EXISTS idx_trainee_plans_trainee_id ON trainee_plans(trainee_id);`,
   `CREATE INDEX IF NOT EXISTS idx_chats_trainer_id ON chats(trainer_id);`,
