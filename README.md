@@ -2,6 +2,20 @@
 
 A simple NestJS backend application with JSON RPC-like REST API.
 
+Backend do aplikacji:
+
+- aplikacja dla trenerów i trenujących (finess) 
+- obie strony mogą rozmawiać na czacie
+- trenerzy mogą mieć wielu klientów i na odwrót
+- trener może zaprosić klienta żeby ten mógł z nim trenować, lub zaakceptować zapytanie ofertowe od klienta
+- klient otrzymując zaproszenie wybiera plan
+- plan opisuje zakres treningu i jego cenę
+- trenerzy mają jeden defaultowy plan na start i mogą sobie tworzyć kolejne
+- obie strony mogą zrezygnować
+- po wyborze planu i akceptacji, klient płaci (jednorazowo) i ma dostęp do chatu
+
+- konwencja API - REST/JSON RPC
+
 ## Features
 
 - **NestJS** framework with TypeScript
